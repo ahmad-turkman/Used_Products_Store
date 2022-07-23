@@ -20,6 +20,9 @@ const ProductDetails = ({ products }) => {
           <p>
             {product.category} / {product.name}
           </p>
+          <br />
+          <p>Posted by: {product.user_name}</p>
+          <br />
           <p>quality: {product.quality}</p>
           <h1>{product.description}</h1>
           <h4>{product.price}</h4>

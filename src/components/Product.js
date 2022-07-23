@@ -10,13 +10,12 @@ const Product = ({ product }) => {
             <FaStar />
             <FaRegStar />
           </div> */}
+      <h4>{product.category}</h4>
+      <p>Posted by: {product.user_name}</p>
       <p>{product.description}</p>
-      <h5>{product.category}</h5>
-      <p>
-        quality:
-        {product.quality}
-      </p>
-      <h6>{product.price}</h6>
+
+      <p>quality: {product.quality}</p>
+      <h3>{product.price}</h3>
     </div>
   );
 };

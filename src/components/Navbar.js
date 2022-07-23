@@ -35,36 +35,74 @@ const Navbar = ({ menutoggle, navstyle }) => {
               Products
             </Link>
           </li>
-          <li>
-            <Link
-              to="/add"
-              onClick={() => {
-                window.scrollTo(0, 0);
-              }}
-            >
-              Add New Product +
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/admin/products"
-              onClick={() => {
-                window.scrollTo(0, 0);
-              }}
-            >
-              Admin
-            </Link>
-          </li>
-          <li>
-            <a
-              href="/account"
-              onClick={() => {
-                window.scrollTo(0, 0);
-              }}
-            >
-              Login | Signup
-            </a>
-          </li>
+          {localStorage.getItem('user_name') ? (
+            <li>
+              <Link
+                to="/add"
+                onClick={() => {
+                  window.scrollTo(0, 0);
+                }}
+              >
+                Add New Product +
+              </Link>
+            </li>
+          ) : (
+            ''
+          )}
+          {localStorage.getItem('admin') === 1 ? (
+            <li>
+              <Link
+                to="/admin/products"
+                onClick={() => {
+                  window.scrollTo(0, 0);
+                }}
+              >
+                Admin
+              </Link>
+            </li>
+          ) : (
+            ''
+          )}
+          {localStorage.getItem('user_name') ? (
+            <li>
+              <Link
+                to=""
+                onClick={() => {
+                  if (window.confirm('Are you sure you want to logout?')) {
+                    localStorage.clear();
+                    window.location.reload();
+                  }
+                }}
+              >
+                Logout
+              </Link>
+            </li>
+          ) : (
+            ''
+          )}
+          {!localStorage.getItem('user_name') ? (
+            <li>
+              <a
+                href="/account"
+                onClick={() => {
+                  window.scrollTo(0, 0);
+                }}
+              >
+                Login | Signup
+              </a>
+            </li>
+          ) : (
+            <li>
+              <a
+                href="/profile"
+                onClick={() => {
+                  window.scrollTo(0, 0);
+                }}
+              >
+                {localStorage.getItem('fname')} {localStorage.getItem('lname')}
+              </a>
+            </li>
+          )}
         </ul>
       </nav>
       <img
