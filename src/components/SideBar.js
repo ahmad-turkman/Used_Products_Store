@@ -30,7 +30,7 @@ const SideBar = () => {
       <ul className="side-list">
         {data.map((val, key) => {
           return (
-            <Link key={key} to={val.link}>
+            <a key={key} href={val.link}>
               <li
                 className="item tooltip"
                 id={window.location.pathname === val.link ? 'active' : ''}
@@ -39,7 +39,7 @@ const SideBar = () => {
                 <div id="icon">{val.icon}</div>
                 <div id="title">{val.title}</div>
               </li>
-            </Link>
+            </a>
           );
         })}
       </ul>

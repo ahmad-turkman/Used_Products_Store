@@ -20,7 +20,7 @@ export const AddProduct = ({ categories, onAdd }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const user_name = 'ahmad';
+    const user_name = localStorage.getItem('user_name');
     onAdd({ name, category, description, quality, price, details, user_name });
 
     setName('');

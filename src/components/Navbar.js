@@ -49,7 +49,7 @@ const Navbar = ({ menutoggle, navstyle }) => {
           ) : (
             ''
           )}
-          {localStorage.getItem('admin') === 1 ? (
+          {localStorage.getItem('admin') === '1' ? (
             <li>
               <Link
                 to="/admin/products"
@@ -70,7 +70,7 @@ const Navbar = ({ menutoggle, navstyle }) => {
                 onClick={() => {
                   if (window.confirm('Are you sure you want to logout?')) {
                     localStorage.clear();
-                    window.location.reload();
+                    window.location.pathname = '/';
                   }
                 }}
               >
@@ -93,14 +93,14 @@ const Navbar = ({ menutoggle, navstyle }) => {
             </li>
           ) : (
             <li>
-              <a
-                href="/profile"
+              <Link
+                to="/profile"
                 onClick={() => {
                   window.scrollTo(0, 0);
                 }}
               >
                 {localStorage.getItem('fname')} {localStorage.getItem('lname')}
-              </a>
+              </Link>
             </li>
           )}
         </ul>

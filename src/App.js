@@ -21,6 +21,7 @@ import AdminProducts from './components/AdminProducts';
 import AdminCategories from './components/AdminCategories';
 import AdminUsers from './components/AdminUsers';
 import AdminRequests from './components/AdminRequests';
+import Profile from './components/Profile';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -164,7 +165,7 @@ function App() {
             element={
               <>
                 <Navbar menutoggle={menutoggle} navstyle="navbar othernav" />
-                <AdminProducts products={products} set={setProducts} />
+                <AdminProducts products={products} admin={true} />
               </>
             }
           />
@@ -192,6 +193,15 @@ function App() {
               <>
                 <Navbar menutoggle={menutoggle} navstyle="navbar othernav" />
                 <AdminRequests products={products} set={setProducts} />
+              </>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <>
+                <Navbar menutoggle={menutoggle} navstyle="navbar othernav" />
+                <Profile products={products} set={setProducts} />
               </>
             }
           />

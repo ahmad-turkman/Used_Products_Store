@@ -13,7 +13,7 @@ const columns = [
   // { name: 'accepted', title: 'accepted' },
 ];
 
-const AdminProducts = ({ products }) => {
+const AdminProducts = ({ products, admin }) => {
   const [myProducts, set] = useState([]);
   useEffect(() => {
     const getProducts = async () => {
@@ -50,6 +50,32 @@ const AdminProducts = ({ products }) => {
       alert('Product updated Succesfully!');
     }
   };
+
+  //Delete Product
+  const onDelete = async (id) => {
+    const res = await fetch(
+      'http://localhost:8080/used_products_store/products/delete_product',
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({ product_id: id }),
+      }
+    );
+
+    const status = await res.status;
+
+    if (status === 200) {
+      set([
+        ...myProducts.filter((p) => {
+          return p.product_id !== id;
+        }),
+      ]);
+      alert('Product Deleted Succesfully!');
+    }
+  };
+
   const getRowId = (row) => row.product_id;
   const columnExtensions = [
     { columnName: 'details', wordWrapEnabled: true },
@@ -65,12 +91,13 @@ const AdminProducts = ({ products }) => {
   const disabled = [{ columnName: 'product_id', editingEnabled: false }];
   return (
     <div>
-      <SideBar />
+      {admin ? <SideBar /> : ''}
       <GridComponet
         rows={myProducts}
         columns={columns}
         getRowId={getRowId}
         onEdit={onEdit}
+        onDelete={onDelete}
         columnExtensions={columnExtensions}
         set={set}
         id="product_id"

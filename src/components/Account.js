@@ -23,7 +23,6 @@ function registerUser(e) {
     if (this.readyState === 4 && this.status === 200) {
       const user = JSON.parse(this.response);
       localStorage.setItem('user_name', user_name);
-      localStorage.setItem('password', password);
       localStorage.setItem('admin', user.is_admin);
       localStorage.setItem('fname', user.first_name);
       localStorage.setItem('lname', user.last_name);
@@ -54,7 +53,6 @@ const loginUser = (e) => {
     if (this.readyState === 4 && this.status === 200) {
       const user = JSON.parse(this.response);
       localStorage.setItem('user_name', user_name);
-      localStorage.setItem('password', password);
       localStorage.setItem('admin', user.is_admin);
       localStorage.setItem('fname', user.first_name);
       localStorage.setItem('lname', user.last_name);

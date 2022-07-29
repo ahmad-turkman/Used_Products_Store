@@ -1,4 +1,13 @@
-import { Button, Chip, Input, MenuItem, Select, styled } from '@mui/material';
+import {
+  Button,
+  ButtonBase,
+  Chip,
+  IconButton,
+  Input,
+  MenuItem,
+  Select,
+  styled,
+} from '@mui/material';
 import '../admin.css';
 import {
   DataTypeProvider,
@@ -30,14 +39,15 @@ const GridComponent = ({
   columns,
   getRowId,
   onEdit,
+  onDelete,
   columnExtensions,
   set,
   id,
   disabled,
   booleanColumns,
+  requests,
 }) => {
   const commitChanges = ({ changed, deleted }) => {
-    let changedRows;
     const data = () => {
       for (let key in changed) {
         if (changed.hasOwnProperty(key)) {
@@ -53,11 +63,8 @@ const GridComponent = ({
       onEdit(data());
     }
     if (deleted) {
-      console.log('delete', deleted);
-      const deletedSet = new Set(deleted);
-      changedRows = rows.filter((row) => !deletedSet.has(row.id));
+      onDelete(deleted[0]);
     }
-    // setRows(changedRows);
   };
 
   const BooleanFormatter = ({ value }) => (
@@ -147,6 +154,72 @@ const GridComponent = ({
 
   ////////////////////////////////////////////////////
 
+  const compareId = (a, b) => {
+    if (parseInt(a) === parseInt(b)) {
+      return 0;
+    }
+    return parseInt(a) < parseInt(b) ? -1 : 1;
+  };
+
+  const sortingColumnExtensions = [{ columnName: id, compare: compareId }];
+
+  ///////////////////////////////////////////
+  const PREFIX = 'Demo';
+  const classes = {
+    button: `${PREFIX}-button`,
+  };
+  const StyledIconButton = styled(IconButton)(({ theme }) => ({
+    [`&.${classes.button}`]: {
+      position: 'absolute',
+      right: '500px',
+      width: '50px',
+      height: '20px',
+      color: 'blue',
+    },
+  }));
+
+  const TableHeaderContent = ({ column, children, ...restProps }) => (
+    <TableHeaderRow.Content column={column} {...restProps}>
+      {children}
+      {column.name === 'category_id' ? (
+        <StyledIconButton
+          className={classes.button}
+          // eslint-disable-next-line no-alert
+          onClick={() => {
+            let name = window.prompt('Enter Category Name');
+            if (name === null || name === '') alert('please Enter a name');
+            else {
+              const onAdd = async (name) => {
+                const res = await fetch(
+                  'http://localhost:8080/used_products_store/categories/add_category',
+                  {
+                    method: 'POST',
+                    headers: {
+                      'Content-type': 'application/json',
+                    },
+                    body: JSON.stringify({ name: name }),
+                  }
+                );
+
+                const status = await res.status;
+                const data = await res.json();
+                if (status === 200) {
+                  set([...rows, data]);
+                  alert('Category Added Succesfully!');
+                }
+              };
+              onAdd(name);
+            }
+          }}
+          size="large"
+        >
+          New
+        </StyledIconButton>
+      ) : null}
+    </TableHeaderRow.Content>
+  );
+
+  //////////////////////////////////////////
   return (
     <div className="account-page">
       <div style={{ margin: '60px' }}>
@@ -157,7 +230,7 @@ const GridComponent = ({
             <SortingState
               defaultSorting={[{ columnName: id, direction: 'asc' }]}
             />
-            <IntegratedSorting />
+            <IntegratedSorting columnExtensions={sortingColumnExtensions} />
             <BooleanTypeProvider for={boolCols} />
             <CustomTypeProvider for={cusCols} />
 
@@ -169,9 +242,15 @@ const GridComponent = ({
               columnExtensions={columnExtensions}
               headComponent={TableComponent}
             />
-            <TableHeaderRow showSortingControls />
+            <TableHeaderRow
+              showSortingControls
+              contentComponent={TableHeaderContent}
+            />
             <TableEditRow />
-            <TableEditColumn showAddCommand showEditCommand showDeleteCommand />
+            <TableEditColumn
+              showEditCommand
+              showDeleteCommand={!requests ? true : false}
+            />
             <Toolbar />
             <SearchPanel />
           </Grid>

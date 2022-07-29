@@ -89,6 +89,7 @@ const AdminRequests = ({ products }) => {
         set={set}
         id="product_id"
         disabled={disabled}
+        requests={true}
       />
     </div>
   );

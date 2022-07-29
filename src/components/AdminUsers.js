@@ -57,12 +57,40 @@ const AdminUsers = () => {
       alert('User updated Succesfully!');
     }
   };
+
+  //Delete USer
+  const onDelete = async (user_name) => {
+    const res = await fetch(
+      'http://localhost:8080/used_products_store/users/delete_user',
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({ user_name: user_name }),
+      }
+    );
+
+    const status = await res.status;
+
+    if (status === 200) {
+      setUsers([
+        ...users.filter((user) => {
+          return user.user_name !== user_name;
+        }),
+      ]);
+      alert('User Deleted Succesfully!');
+    }
+  };
+
   const getRowId = (row) => row.user_name;
   const columnExtensions = [
     { columnName: 'user_name', width: 120 },
     { columnName: 'first_name', width: 100 },
     { columnName: 'rate', width: 75 },
     { columnName: 'is_admin', width: 100 },
+    { columnName: 'last_name', width: 140 },
+    { columnName: 'phone_number', width: 140 },
   ];
 
   return (
@@ -73,6 +101,7 @@ const AdminUsers = () => {
         columns={columns}
         getRowId={getRowId}
         onEdit={onEdit}
+        onDelete={onDelete}
         columnExtensions={columnExtensions}
         set={setUsers}
         id="user_name"
