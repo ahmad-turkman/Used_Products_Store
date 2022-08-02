@@ -1,7 +1,19 @@
 const Product = ({ product }) => {
+  let objectURL = '';
+  console.log(product.image);
+  if (product.image !== null && product.image !== undefined) {
+    const byteCharacters = atob(product.image);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray]);
+    objectURL = URL.createObjectURL(blob);
+  }
   return (
     <div key={product.product_id} className="col-4">
-      <img src={require('../images/product-1.jpg')} alt={product.name} />
+      <img src={objectURL} alt={product.name} />
       <h2>{product.name}</h2>
       {/* <div className="rating">
             <FaStar />

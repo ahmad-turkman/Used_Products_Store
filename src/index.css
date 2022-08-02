@@ -193,14 +193,14 @@ h4 {
   transform: translateY(-5px);
 }
 
-/*----------- offer ------------*/
-.offer {
+/*----------- execlusive ------------*/
+.execlusive {
   background: radial-gradient(#fff, #ffd6d6);
   margin-top: 80px;
   padding: 30px 0;
 }
 
-.col-2 .offer-img {
+.col-2 .execlusive-img {
   padding: 50px;
 }
 
@@ -550,8 +550,8 @@ input:focus {
 
 .number {
   position: relative;
-  width: 44px;
-  height: 44px;
+  width: 55px;
+  height: 55px;
   text-align: center;
   border-radius: 50%;
   display: block;
@@ -642,4 +642,28 @@ input:focus {
     border-color: rgba(0, 0, 0, 0.418) transparent transparent transparent;
     transform: rotate(180deg);
   }
+}
+
+.newCategory {
+  position: absolute;
+  right: 500px;
+  width: 50px;
+  height: 20px;
+  color: blue;
+}
+
+@media (max-width: 965px) {
+  .newCategory {
+    right: 200px;
+  }
+}
+
+#picture {
+  width: 100%;
+}
+
+#preview {
+  width: 50%;
+  border: 2px solid black;
+  display: none;
 }

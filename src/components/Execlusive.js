@@ -1,13 +1,13 @@
-const Offer = () => {
+const Execlusive = () => {
   return (
-    <div className="offer">
+    <div className="execlusive">
       <div className="small-container">
         <div className="row">
           <div className="col-2">
             <img
               src={require('../images/exclusive.png')}
-              alt="offer"
-              className="offer-img"
+              alt="Execlusive"
+              className="execlusive-img"
             />
           </div>
           <div className="col-2">
@@ -19,7 +19,7 @@ const Offer = () => {
               everything is clear as can be.
             </p>
             <a href="" className="btn">
-              Buy Now &#8594;
+              Purchase Now &#8594;
             </a>
           </div>
         </div>
@@ -28,4 +28,4 @@ const Offer = () => {
   );
 };
 
-export default Offer;
+export default Execlusive;

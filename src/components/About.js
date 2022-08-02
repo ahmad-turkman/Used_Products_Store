@@ -26,7 +26,7 @@ const About = () => {
         <div className="col-3">
           <ImgMediaCard
             title="wait for buyers"
-            details="visitors can show your product and buy it. Wait for one, negotiate, deliver and take your cash."
+            details="visitors can show your product and buy it. Wait for one, negotiate, deliver and take your cash!"
             num={3}
             img={require('../images/user-3.png')}
           />

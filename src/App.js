@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Products from './components/Products';
 import Categories from './components/Categories';
-import Offer from './components/Offer';
 import Footer from './components/Footer';
 import {
   BrowserRouter as Router,
@@ -22,6 +21,8 @@ import AdminCategories from './components/AdminCategories';
 import AdminUsers from './components/AdminUsers';
 import AdminRequests from './components/AdminRequests';
 import Profile from './components/Profile';
+import Execlusive from './components/Execlusive';
+import Offers from './components/Offers';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -62,23 +63,50 @@ function App() {
   };
 
   //Add Product
-  const addProduct = async (product) => {
+  const addProduct = async (product, file) => {
+    const image = new FormData();
+    image.append('hmap', JSON.stringify(product));
+    image.append('image', file);
     const res = await fetch(
       'http://localhost:8080/used_products_store/products/add_product',
       {
         method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify(product),
+        body: image,
       }
     );
 
     const status = await res.status;
-    if (status === 200) alert('Product added Succesfully!');
-    const data = await res.json();
+    if (status === 200)
+      alert(
+        'Product has been sent to the admin Succesfully!\n it will be added as soon as the admin accepts it.'
+      );
 
-    setProducts([...products, data]);
+    return status;
+  };
+
+  //Delete Product
+  const onDelete = async (id) => {
+    const res = await fetch(
+      'http://localhost:8080/used_products_store/products/delete_product',
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({ product_id: id }),
+      }
+    );
+
+    const status = await res.status;
+
+    if (status === 200) {
+      setProducts([
+        ...products.filter((p) => {
+          return p.product_id !== id;
+        }),
+      ]);
+    }
+    return status;
   };
 
   return (
@@ -92,12 +120,18 @@ function App() {
                 <Header />
                 <Categories categories={categories} />
                 <About />
+                <Execlusive />
+                <Products
+                  products={products}
+                  set={setProducts}
+                  title="Featured Products"
+                />
                 <Products
                   products={products}
                   set={setProducts}
                   title="Latest Products"
                 />
-                <Offer />
+                <Offers />
               </>
             }
           />
@@ -165,7 +199,11 @@ function App() {
             element={
               <>
                 <Navbar menutoggle={menutoggle} navstyle="navbar othernav" />
-                <AdminProducts products={products} admin={true} />
+                <AdminProducts
+                  products={products}
+                  admin={true}
+                  onDelete={onDelete}
+                />
               </>
             }
           />

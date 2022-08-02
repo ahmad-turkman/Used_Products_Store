@@ -46,6 +46,7 @@ const GridComponent = ({
   disabled,
   booleanColumns,
   requests,
+  customFormatter,
 }) => {
   const commitChanges = ({ changed, deleted }) => {
     const data = () => {
@@ -94,63 +95,13 @@ const GridComponent = ({
   const boolCols = [booleanColumns];
 
   ///////////////////////////////////////////////////
-  const customFormatter = () => (
-    <div>
-      <Button
-        type="button"
-        style={{ backgroundColor: 'green', color: 'white', marginLeft: '10px' }}
-        onClick={(e) => {
-          const id =
-            e.target.parentElement.parentElement.parentElement.children[1]
-              .innerText;
-          onEdit({ id: id, accepted: '1' });
-        }}
-      >
-        Accept
-      </Button>
-      <Button
-        type="button"
-        style={{ backgroundColor: 'red', color: 'white', marginLeft: '20px' }}
-        onClick={(e) => {
-          const id =
-            e.target.parentElement.parentElement.parentElement.children[1]
-              .innerText;
-          //Reject Product => Delete request
-          const onReject = async (id) => {
-            const res = await fetch(
-              'http://localhost:8080/used_products_store/products/delete_product',
-              {
-                method: 'DELETE',
-                headers: {
-                  'Content-type': 'application/json',
-                },
-                body: JSON.stringify({ product_id: id }),
-              }
-            );
-
-            const status = await res.status;
-            if (status === 200) {
-              set([
-                ...rows.filter((p) => {
-                  return p.product_id !== id;
-                }),
-              ]);
-              alert('Product Rejected!');
-            }
-          };
-          onReject(id);
-        }}
-      >
-        Reject
-      </Button>
-    </div>
-  );
 
   const CustomTypeProvider = (props) => (
     <DataTypeProvider formatterComponent={customFormatter} {...props} />
   );
 
-  const cusCols = ['accepted'];
+  const RequestCusCols = ['accepted'];
+  const usersCusCols = ['reset'];
 
   ////////////////////////////////////////////////////
 
@@ -183,11 +134,11 @@ const GridComponent = ({
       {children}
       {column.name === 'category_id' ? (
         <StyledIconButton
-          className={classes.button}
-          // eslint-disable-next-line no-alert
-          onClick={() => {
+          className="newCategory"
+          onClick={(e) => {
             let name = window.prompt('Enter Category Name');
-            if (name === null || name === '') alert('please Enter a name');
+            if (name === null || name === '')
+              alert('Category Name cannot be empty!');
             else {
               const onAdd = async (name) => {
                 const res = await fetch(
@@ -232,8 +183,8 @@ const GridComponent = ({
             />
             <IntegratedSorting columnExtensions={sortingColumnExtensions} />
             <BooleanTypeProvider for={boolCols} />
-            <CustomTypeProvider for={cusCols} />
-
+            <CustomTypeProvider for={RequestCusCols} />
+            <CustomTypeProvider for={usersCusCols} />
             <EditingState
               onCommitChanges={commitChanges}
               columnExtensions={disabled}
