@@ -1,6 +1,4 @@
 import {
-  Button,
-  ButtonBase,
   Chip,
   IconButton,
   Input,
@@ -14,6 +12,7 @@ import {
   EditingState,
   IntegratedFiltering,
   IntegratedSorting,
+  RowDetailState,
   SearchState,
   SortingState,
 } from '@devexpress/dx-react-grid';
@@ -25,6 +24,7 @@ import {
   SearchPanel,
   TableEditRow,
   TableEditColumn,
+  TableRowDetail,
 } from '@devexpress/dx-react-grid-material-ui';
 import Paper from '@mui/material/Paper';
 
@@ -47,6 +47,7 @@ const GridComponent = ({
   booleanColumns,
   requests,
   customFormatter,
+  RowDetail,
 }) => {
   const commitChanges = ({ changed, deleted }) => {
     const data = () => {
@@ -64,7 +65,8 @@ const GridComponent = ({
       onEdit(data());
     }
     if (deleted) {
-      onDelete(deleted[0]);
+      if (window.confirm('Are you sure you want to delete?'))
+        onDelete(deleted[0]);
     }
   };
 
@@ -176,6 +178,7 @@ const GridComponent = ({
       <div style={{ margin: '60px' }}>
         <Paper>
           <Grid rows={rows} columns={columns} getRowId={getRowId}>
+            {RowDetail ? <RowDetailState /> : ''}
             <SearchState />
             <IntegratedFiltering />
             <SortingState
@@ -193,15 +196,17 @@ const GridComponent = ({
               columnExtensions={columnExtensions}
               headComponent={TableComponent}
             />
+            {RowDetail ? <TableRowDetail contentComponent={RowDetail} /> : ''}
             <TableHeaderRow
               showSortingControls
               contentComponent={TableHeaderContent}
             />
             <TableEditRow />
-            <TableEditColumn
-              showEditCommand
-              showDeleteCommand={!requests ? true : false}
-            />
+            {!requests ? (
+              <TableEditColumn showEditCommand showDeleteCommand />
+            ) : (
+              ''
+            )}
             <Toolbar />
             <SearchPanel />
           </Grid>

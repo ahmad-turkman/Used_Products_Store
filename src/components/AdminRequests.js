@@ -8,12 +8,44 @@ const columns = [
   { name: 'name', title: 'name' },
   { name: 'description', title: 'description' },
   { name: 'category', title: 'category' },
-  { name: 'user_name', title: 'User' },
-  { name: 'quality', title: 'quality' },
-  { name: 'price', title: 'price' },
-  { name: 'details', title: 'details' },
   { name: 'accepted', title: 'Accept/Reject' },
 ];
+
+const parseImg = (product) => {
+  let objectURL = '';
+  if (product !== undefined)
+    if (product.image !== undefined && product.image !== null) {
+      const byteCharacters = atob(product.image);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray]);
+      objectURL = URL.createObjectURL(blob);
+      return objectURL;
+    }
+};
+
+const RowDetail = ({ row }) => (
+  <div
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-around',
+    }}
+  >
+    <h2>Details for {row.name}: </h2>
+    user name: {row.user_name} <br />
+    quality: {row.quality} <br />
+    price: {row.price} <br />
+    details: {row.details} <br />
+    upload date: {row.upload_date}
+    <div style={{ width: '100px' }}>
+      <img style={{ width: '200px' }} alt={row.name} src={parseImg(row)} />
+    </div>
+  </div>
+);
 
 const AdminRequests = ({ products }) => {
   const [myProducts, set] = useState([]);
@@ -70,8 +102,8 @@ const AdminRequests = ({ products }) => {
     { columnName: 'quality', width: 100 },
     { columnName: 'price', width: 90 },
     { columnName: 'category', width: 120 },
-    { columnName: 'name', width: 90 },
-    { columnName: 'description', width: 160 },
+    { columnName: 'name', width: 200 },
+    // { columnName: 'description', width: 160 },
     { columnName: 'accepted', width: 200 },
   ];
 
@@ -89,7 +121,8 @@ const AdminRequests = ({ products }) => {
           const id =
             e.target.parentElement.parentElement.parentElement.children[1]
               .innerText;
-          onEdit({ id: id, accepted: '1' });
+          if (window.confirm('Are you sure you want to Accept Product?'))
+            onEdit({ id: id, accepted: '1' });
         }}
       >
         Accept
@@ -124,7 +157,8 @@ const AdminRequests = ({ products }) => {
               alert('Product Rejected!');
             }
           };
-          onReject(id);
+          if (window.confirm('Are you sure you want to Reject Product?'))
+            onReject(id);
         }}
       >
         Reject
@@ -146,6 +180,7 @@ const AdminRequests = ({ products }) => {
         disabled={disabled}
         requests={true}
         customFormatter={customFormatter}
+        RowDetail={RowDetail}
       />
     </div>
   );

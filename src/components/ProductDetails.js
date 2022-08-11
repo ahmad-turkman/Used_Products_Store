@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 const ProductDetails = ({ products }) => {
@@ -18,6 +19,34 @@ const ProductDetails = ({ products }) => {
       const blob = new Blob([byteArray]);
       objectURL = URL.createObjectURL(blob);
     }
+
+  const createOrder = async (product) => {
+    const res = await fetch(
+      'http://localhost:8080/used_products_store/orders',
+      {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          product_id: product.product_id,
+          user_name: product.user_name,
+        }),
+      }
+    );
+
+    const status = await res.status;
+
+    if (status === 200) {
+      const order = await res.json();
+      window.location.pathname = `/order/${order.order_id}`;
+    } else {
+      const response = await res.text();
+      alert(response);
+    }
+
+    return status;
+  };
 
   return product !== undefined ? (
     <div className="small-container single-product">
@@ -45,14 +74,26 @@ const ProductDetails = ({ products }) => {
           <br />
           <br />
           <p>{product.upload_date}</p>
-          <a href="/order" className="btn">
-            Purchase &#8594;
-          </a>
+          {localStorage.getItem('user_name') ? (
+            <button
+              className="btn"
+              onClick={() => {
+                window.scrollTo(0, 0);
+                createOrder(product);
+              }}
+            >
+              Purchase &#8594;
+            </button>
+          ) : (
+            <a href="/account" className="btn">
+              Login to Purchase &#8594;
+            </a>
+          )}
         </div>
       </div>
     </div>
   ) : (
-    'Oop! something went worng :('
+    'Oops! something went worng :('
   );
 };
 

@@ -1,6 +1,6 @@
 const Product = ({ product }) => {
   let objectURL = '';
-  console.log(product.image);
+  // console.log(product.image);
   if (product.image !== null && product.image !== undefined) {
     const byteCharacters = atob(product.image);
     const byteNumbers = new Array(byteCharacters.length);

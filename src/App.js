@@ -23,10 +23,12 @@ import AdminRequests from './components/AdminRequests';
 import Profile from './components/Profile';
 import Execlusive from './components/Execlusive';
 import Offers from './components/Offers';
+import Order from './components/Order';
 
 function App() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -58,6 +60,21 @@ function App() {
     const res = await fetch(
       'http://localhost:8080/used_products_store/categories/get_all_categories'
     );
+    const data = await res.json();
+    return data;
+  };
+
+  useEffect(() => {
+    const getOrders = async () => {
+      const orders = await fetchOrders();
+      setOrders(orders);
+    };
+
+    getOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    const res = await fetch('http://localhost:8080/used_products_store/orders');
     const data = await res.json();
     return data;
   };
@@ -239,7 +256,20 @@ function App() {
             element={
               <>
                 <Navbar menutoggle={menutoggle} navstyle="navbar othernav" />
-                <Profile products={products} set={setProducts} />
+                <Profile
+                  products={products}
+                  orders={orders}
+                  set={setProducts}
+                />
+              </>
+            }
+          />
+          <Route
+            path="/order/:orderId"
+            element={
+              <>
+                <Navbar menutoggle={menutoggle} navstyle="navbar" />
+                <Order />
               </>
             }
           />

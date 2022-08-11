@@ -10,7 +10,7 @@ const columns = [
   { name: 'email', title: 'Email' },
   { name: 'reset', title: 'reset Password' },
   { name: 'phone_number', title: 'Phone Number' },
-  { name: 'is_admin', title: 'Admin' },
+  // { name: 'is_admin', title: 'Admin' },
   { name: 'rate', title: 'Rate' },
 ];
 
@@ -112,9 +112,9 @@ const AdminUsers = () => {
     { columnName: 'rate', width: 75 },
     { columnName: 'is_admin', width: 100 },
     { columnName: 'last_name', width: 140 },
-    { columnName: 'phone_number', width: 140 },
+    { columnName: 'phone_number', width: 180 },
     { columnName: 'reset', width: 150 },
-    { columnName: 'email', width: 200 },
+    // { columnName: 'email', width: 200 },
   ];
 
   const customFormatter = () => (

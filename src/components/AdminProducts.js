@@ -11,7 +11,30 @@ const columns = [
   { name: 'quality', title: 'quality' },
   { name: 'price', title: 'price' },
   { name: 'details', title: 'details' },
+  { name: 'upload_date', title: 'date' },
 ];
+
+const parseImg = (product) => {
+  let objectURL = '';
+  if (product !== undefined)
+    if (product.image !== undefined && product.image !== null) {
+      const byteCharacters = atob(product.image);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray]);
+      objectURL = URL.createObjectURL(blob);
+      return objectURL;
+    }
+};
+
+const RowDetail = ({ row }) => (
+  <div style={{ width: '100px' }}>
+    <img style={{ width: '200px' }} alt={row.name} src={parseImg(row)} />
+  </div>
+);
 
 const AdminProducts = ({ products, admin, onDelete }) => {
   const [myProducts, set] = useState([]);
@@ -55,12 +78,13 @@ const AdminProducts = ({ products, admin, onDelete }) => {
   const columnExtensions = [
     { columnName: 'details', wordWrapEnabled: true },
     { columnName: 'product_id', width: 75 },
-    { columnName: 'quality', width: 100 },
-    { columnName: 'price', width: 100 },
-    { columnName: 'category', width: 120 },
-    { columnName: 'name', width: 130 },
-    { columnName: 'description', width: 160 },
-    { columnName: 'accepted', width: 105 },
+    { columnName: 'quality', wordWrapEnabled: true },
+    { columnName: 'price', wordWrapEnabled: true },
+    { columnName: 'category', wordWrapEnabled: true },
+    { columnName: 'name', wordWrapEnabled: true },
+    { columnName: 'description', wordWrapEnabled: true },
+    { columnName: 'accepted', wordWrapEnabled: true },
+    { columnName: 'user_name', wordWrapEnabled: true },
   ];
 
   const deleteProduct = (id) => {
@@ -89,6 +113,7 @@ const AdminProducts = ({ products, admin, onDelete }) => {
         set={set}
         id="product_id"
         disabled={disabled}
+        RowDetail={RowDetail}
       />
     </div>
   );
