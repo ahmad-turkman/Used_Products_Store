@@ -48,6 +48,7 @@ const GridComponent = ({
   requests,
   customFormatter,
   RowDetail,
+  order,
 }) => {
   const commitChanges = ({ changed, deleted }) => {
     const data = () => {
@@ -104,6 +105,7 @@ const GridComponent = ({
 
   const RequestCusCols = ['accepted'];
   const usersCusCols = ['reset'];
+  const ordersCusCols = ['bla'];
 
   ////////////////////////////////////////////////////
 
@@ -174,7 +176,7 @@ const GridComponent = ({
 
   //////////////////////////////////////////
   return (
-    <div className="account-page">
+    <div className={!order ? 'account-page' : 'order'}>
       <div style={{ margin: '60px' }}>
         <Paper>
           <Grid rows={rows} columns={columns} getRowId={getRowId}>
@@ -188,6 +190,7 @@ const GridComponent = ({
             <BooleanTypeProvider for={boolCols} />
             <CustomTypeProvider for={RequestCusCols} />
             <CustomTypeProvider for={usersCusCols} />
+            <CustomTypeProvider for={ordersCusCols} />
             <EditingState
               onCommitChanges={commitChanges}
               columnExtensions={disabled}

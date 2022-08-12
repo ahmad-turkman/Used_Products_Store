@@ -5,7 +5,7 @@ import { BiSad } from 'react-icons/bi';
 const CatProducts = ({ products }) => {
   const params = useParams();
   const catProducts = products.filter((product) => {
-    return product.category === params.categoryName;
+    return product.category === params.categoryName && product.accepted === '1';
   });
   return (
     <div>

@@ -769,3 +769,6 @@ input:focus {
 .bg-secondary {
   background-color: #f5f5f5 !important;
 }
+.order {
+  background-color: #fff;
+}

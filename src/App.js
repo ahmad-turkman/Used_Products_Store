@@ -138,11 +138,11 @@ function App() {
                 <Categories categories={categories} />
                 <About />
                 <Execlusive />
-                <Products
+                {/* <Products
                   products={products}
                   set={setProducts}
                   title="Featured Products"
-                />
+                /> */}
                 <Products
                   products={products}
                   set={setProducts}
@@ -269,7 +269,7 @@ function App() {
             element={
               <>
                 <Navbar menutoggle={menutoggle} navstyle="navbar" />
-                <Order />
+                <Order onDelete={onDelete} />
               </>
             }
           />
