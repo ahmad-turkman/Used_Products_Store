@@ -18,7 +18,7 @@ const Offers = () => {
         <div className="col-3">
           <ImgMediaCard
             title="Featured Product"
-            details="Featured products will appear first to visitors. You can get this show for one week."
+            details="Featured products will appear first to visitors. You can get this offer for one week."
             num="$19.0"
             img={require('../images/featured.png')}
           />
@@ -26,7 +26,7 @@ const Offers = () => {
         <div className="col-3">
           <ImgMediaCard
             title="Execlusive Product"
-            details="Execlusive products will appear individually for two days. You can get this offer. "
+            details="Execlusive products will appear individually for two days at the top of the store."
             num="$15.0"
             img={require('../images/execlusive.png')}
           />

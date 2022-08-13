@@ -36,7 +36,7 @@ const RowDetail = ({ row }) => (
   </div>
 );
 
-const AdminProducts = ({ products, admin, onDelete }) => {
+const AdminProducts = ({ products, admin, onDelete, categories }) => {
   const [myProducts, set] = useState([]);
   useEffect(() => {
     const getProducts = async () => {
@@ -80,7 +80,7 @@ const AdminProducts = ({ products, admin, onDelete }) => {
     { columnName: 'product_id', width: 75 },
     { columnName: 'quality', wordWrapEnabled: true },
     { columnName: 'price', wordWrapEnabled: true },
-    { columnName: 'category', wordWrapEnabled: true },
+    { columnName: 'category_name', wordWrapEnabled: true },
     { columnName: 'name', wordWrapEnabled: true },
     { columnName: 'description', wordWrapEnabled: true },
     { columnName: 'accepted', wordWrapEnabled: true },
@@ -114,6 +114,7 @@ const AdminProducts = ({ products, admin, onDelete }) => {
         id="product_id"
         disabled={disabled}
         RowDetail={RowDetail}
+        categories={categories}
       />
     </div>
   );

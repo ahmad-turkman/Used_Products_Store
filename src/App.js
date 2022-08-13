@@ -138,11 +138,11 @@ function App() {
                 <Categories categories={categories} />
                 <About />
                 <Execlusive />
-                {/* <Products
-                  products={products}
+                <Products
+                  products={[]}
                   set={setProducts}
                   title="Featured Products"
-                /> */}
+                />
                 <Products
                   products={products}
                   set={setProducts}
@@ -220,6 +220,7 @@ function App() {
                   products={products}
                   admin={true}
                   onDelete={onDelete}
+                  categories={categories}
                 />
               </>
             }

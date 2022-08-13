@@ -49,6 +49,7 @@ const GridComponent = ({
   customFormatter,
   RowDetail,
   order,
+  categories,
 }) => {
   const commitChanges = ({ changed, deleted }) => {
     const data = () => {
@@ -96,6 +97,36 @@ const GridComponent = ({
   );
 
   const boolCols = [booleanColumns];
+
+  ///////////////////////////////////////////////////
+  let options =
+    categories !== undefined
+      ? categories.length > 0 &&
+        categories.map((category) => {
+          return (
+            <MenuItem key={category.category_id} value={category.name}>
+              {category.name}
+            </MenuItem>
+          );
+        }, this)
+      : '';
+
+  const categoryEditor = ({ value, onValueChange }) => (
+    <Select
+      input={<Input />}
+      value={value}
+      onChange={(event) => onValueChange(event.target.value)}
+      style={{ width: '100%' }}
+    >
+      {options}
+    </Select>
+  );
+
+  const CategoryTypeProvider = (props) => (
+    <DataTypeProvider editorComponent={categoryEditor} {...props} />
+  );
+
+  const catCols = ['category'];
 
   ///////////////////////////////////////////////////
 
@@ -191,6 +222,7 @@ const GridComponent = ({
             <CustomTypeProvider for={RequestCusCols} />
             <CustomTypeProvider for={usersCusCols} />
             <CustomTypeProvider for={ordersCusCols} />
+            <CategoryTypeProvider for={catCols} />
             <EditingState
               onCommitChanges={commitChanges}
               columnExtensions={disabled}

@@ -68,6 +68,9 @@ const Order = ({ onDelete }) => {
         }),
         data,
       ]);
+      // if (data.status === 'paid') {
+      //   onDelete(data.product.product_id);
+      // }
     }
   };
 
@@ -269,8 +272,8 @@ const Order = ({ onDelete }) => {
                 {buttonMap.get(order.status)}
               </button>
             )}
-            {order.status !== 'paid' ||
-            order.status !== 'received' ||
+            {order.status !== 'paid' &&
+            order.status !== 'received' &&
             order.status !== 'rated' ? (
               <button
                 className="btn"
